@@ -1,12 +1,17 @@
 import argparse
 import logging
 import time
+import importlib.util
 
 import cv2
 import numpy as np
 
 from tf_pose.estimator import TfPoseEstimator
 from tf_pose.networks import get_graph_path, model_wh
+
+# Import our stuff
+import human_tetris as ht
+
 
 logger = logging.getLogger('TfPoseEstimator-WebCam')
 logger.setLevel(logging.DEBUG)
@@ -19,7 +24,12 @@ logger.addHandler(ch)
 fps_time = 0
 
 
+# Game manager variable reference
+GameManager = ht.Human_Tetris()
+
 if __name__ == '__main__':
+
+    #This part just parses the string input from the command line
     parser = argparse.ArgumentParser(description='tf-pose-estimation realtime webcam')
     parser.add_argument('--camera', type=int, default=0)
 
@@ -40,21 +50,30 @@ if __name__ == '__main__':
     else:
         e = TfPoseEstimator(get_graph_path(args.model), target_size=(432, 368))
     logger.debug('cam read+')
+
+    #Start the camera
     cam = cv2.VideoCapture(args.camera)
     ret_val, image = cam.read()
     logger.info('cam image=%dx%d' % (image.shape[1], image.shape[0]))
 
+    #Keep reading the camera input until you exit the program -- You can click ESC to quit the program while it is running
     while True:
         ret_val, image = cam.read()
 
+        
         # Detect Joints
         logger.debug('image process+')
         humans = e.inference(image, resize_to_default=(w > 0 and h > 0), upsample_size=args.resize_out_ratio) # Array of the humans with joints.
-
-        #Draw joints
+        
+        #Draw joints -- will be hidden later. 
         logger.debug('postprocess+')
-        image = TfPoseEstimator.draw_humans(image, humans, imgcopy=False) 
+        image = TfPoseEstimator.draw_humans(image, humans, imgcopy=False)
 
+        # Update the players' joint positions
+
+        # Generate joint image with all the currently known joint locations
+
+        # Show the image
         logger.debug('show+')
         cv2.putText(image,
                     "FPS: %f" % (1.0 / (time.time() - fps_time)),
@@ -65,5 +84,6 @@ if __name__ == '__main__':
         if cv2.waitKey(1) == 27:
             break
         logger.debug('finished+')
+
 
     cv2.destroyAllWindows()
