@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\tf-openpose"
+    "\\tf-openpose",
+    "\\tf-openpose\\tf_pose"
   ],
-  "SelectedNode": "\\tf-openpose\\run_webcam.py",
+  "SelectedNode": "\\tf-openpose\\tf_pose\\estimator.py",
   "PreviewInSolutionExplorer": false
 }

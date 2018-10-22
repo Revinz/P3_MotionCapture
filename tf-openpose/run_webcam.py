@@ -6,6 +6,7 @@ import importlib.util
 import cv2
 import numpy as np
 
+import tf_pose.estimator as estimator
 from tf_pose.estimator import TfPoseEstimator
 from tf_pose.networks import get_graph_path, model_wh
 
@@ -62,19 +63,32 @@ if __name__ == '__main__':
 
         
         # Detect Joints
-        logger.debug('image process+')
+        #logger.debug('image process+')
         humans = e.inference(image, resize_to_default=(w > 0 and h > 0), upsample_size=args.resize_out_ratio) # Array of the humans with joints.
         
         #Draw joints -- will be hidden later. 
-        logger.debug('postprocess+')
+        #logger.debug('postprocess+')
         image = TfPoseEstimator.draw_humans(image, humans, imgcopy=False)
 
+
         # Update the players' joint positions
+        for counter, human in enumerate(humans): #For the 2 players
+
+            if counter > 1: #Don't bother detecting more than 2 players.
+                break;
+
+            #Update the body parts
+            for part in human.body_parts:
+                print(human.body_parts[part].uidx)
+                print(counter)
+                print("X= %f Y= %f" % (human.body_parts[part].x * 432, human.body_parts[part].y * 368))
+
+
 
         # Generate joint image with all the currently known joint locations
 
         # Show the image
-        logger.debug('show+')
+        #logger.debug('show+')
         cv2.putText(image,
                     "FPS: %f" % (1.0 / (time.time() - fps_time)),
                     (10, 10),  cv2.FONT_HERSHEY_SIMPLEX, 0.5,
