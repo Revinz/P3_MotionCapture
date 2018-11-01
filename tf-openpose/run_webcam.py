@@ -12,6 +12,7 @@ from tf_pose.networks import get_graph_path, model_wh
 
 # Import our stuff
 import human_tetris as ht
+import preprocess
 
 
 logger = logging.getLogger('TfPoseEstimator-WebCam')
@@ -57,18 +58,21 @@ if __name__ == '__main__':
     ret_val, image = cam.read()
     logger.info('cam image=%dx%d' % (image.shape[1], image.shape[0]))
 
+    pre = preprocess.Preprocessing();
     #Keep reading the camera input until you exit the program -- You can click ESC to quit the program while it is running
     while True:
         ret_val, image = cam.read()
 
+        # Pre-processing
+        preprocessed = pre.Preprocess(pre.HIGH_CONTRAST, image)
         
         # Detect Joints
         #logger.debug('image process+')
-        humans = e.inference(image, resize_to_default=(w > 0 and h > 0), upsample_size=args.resize_out_ratio) # Array of the humans with joints.
-        
+        humans = e.inference(preprocessed, resize_to_default=(w > 0 and h > 0), upsample_size=args.resize_out_ratio) # Array of the humans with joints.
+            
         #Draw joints -- will be hidden later. 
         #logger.debug('postprocess+')
-        image = TfPoseEstimator.draw_humans(image, humans, imgcopy=False)
+        preprocessed = TfPoseEstimator.draw_humans(preprocessed, humans, imgcopy=False)
 
 
         # Update the players' joint positions
@@ -89,11 +93,11 @@ if __name__ == '__main__':
 
         # Show the image
         #logger.debug('show+')
-        cv2.putText(image,
+        cv2.putText(preprocessed,
                     "FPS: %f" % (1.0 / (time.time() - fps_time)),
                     (10, 10),  cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                     (0, 255, 0), 2)
-        cv2.imshow('tf-pose-estimation result', image)
+        cv2.imshow('tf-pose-estimation result', preprocessed)
         fps_time = time.time()
         if cv2.waitKey(1) == 27:
             break

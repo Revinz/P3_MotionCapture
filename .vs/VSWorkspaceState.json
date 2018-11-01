@@ -4,6 +4,6 @@
     "\\tf-openpose",
     "\\tf-openpose\\tf_pose"
   ],
-  "SelectedNode": "\\tf-openpose\\tf_pose\\estimator.py",
+  "SelectedNode": "\\tf-openpose\\preprocess.py",
   "PreviewInSolutionExplorer": false
 }
