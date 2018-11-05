@@ -16,6 +16,7 @@ import preprocess
               
               counter = 0
               
+              for player in self.players
               for part in human.body_parts:
                 print(human.body_parts[part].uidx)
                 counter+=1
