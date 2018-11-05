@@ -74,18 +74,20 @@ if __name__ == '__main__':
         #logger.debug('postprocess+')
         preprocessed = TfPoseEstimator.draw_humans(preprocessed, humans, imgcopy=False)
 
-
+        bodyPartCounter = 0
         # Update the players' joint positions
         for counter, human in enumerate(humans): #For the 2 players
 
             if counter > 1: #Don't bother detecting more than 2 players.
                 break;
 
+            bodyPartCounter+=len(human.body_parts)
+            print(bodyPartCounter)
             #Update the body parts
-            for part in human.body_parts:
-                print(human.body_parts[part].uidx)
-                print(counter)
-                print("X= %f Y= %f" % (human.body_parts[part].x * 432, human.body_parts[part].y * 368))
+            #for part in human.body_parts:
+               # print(human.body_parts[part].uidx)
+               # print(counter)
+               # print("X= %f Y= %f" % (human.body_parts[part].x * 432, human.body_parts[part].y * 368))
 
 
 
