@@ -18,7 +18,7 @@ import preprocess
               
               for part in human.body_parts:
                 print(human.body_parts[part].uidx)
-                counter++
+                counter+=1
                 
              
              print(counter)
