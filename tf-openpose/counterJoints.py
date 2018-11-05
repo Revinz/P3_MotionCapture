@@ -14,12 +14,11 @@ from tf_pose.networks import get_graph_path, model_wh
 import human_tetris as ht
 import preprocess
               
-              counter = 0
+counter = 0
               
-              for player in self.players
-              for part in human.body_parts:
-                print(human.body_parts[part].uidx)
-                counter+=1
+for player in self.players:
+  counter+=len(player.body_parts)
+    
                 
              
-             print(counter)
+print(counter)
