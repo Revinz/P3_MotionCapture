@@ -82,7 +82,7 @@ if __name__ == '__main__':
         frame = frame + 1
 
         # Pre-processing        
-        preprocessed = pre.Sharpness(2.2, 1, image)
+        preprocessed = pre.Edge_detection(image)
         
         '''
         keyPress = cv2.waitKey(1)
