@@ -78,6 +78,8 @@ if __name__ == '__main__':
             break
 
     cv2.destroyAllWindows()
+    print("The total amount of joints found: " + str(totalJoints))
+    print("Frame count: " + str(frame))
     plt.plot(frameList, jointList)
     plt.show()
 logger.debug('finished+')
