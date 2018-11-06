@@ -68,9 +68,11 @@ if __name__ == '__main__':
     frame = -1
     while True:
         ret_val, image = cam.read()
+        print(np.shape(image))
         frame = frame + 1
         # Pre-processing
-        preprocessed = pre.Sharpness(2.2, 1, image)
+        preprocessed = pre.Edge_detection(image)
+        print(np.shape(preprocessed))
         
         # Detect Joints
         #logger.debug('image process+')
@@ -87,9 +89,7 @@ if __name__ == '__main__':
                 break;
 
             bodyPartCounter+=len(human.body_parts)
-            print("Total Parts found: " + bodyPartCounter)
-
-            bodyPartSectionsCounter
+            print("Total Parts found: " + "str(bodyPartCounter)")
 
         
 

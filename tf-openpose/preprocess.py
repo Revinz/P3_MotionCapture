@@ -12,10 +12,19 @@ class Preprocessing:
         new_image = image * 1.5
         return new_image
 
-    def Edge_detection(self, value, image):
-        #Just a test, remove when implementing proper method
-        new_image = image * 1.5
-        return new_image
+    def Edge_detection(self, image):
+
+        #Convert image to grayscale to make edgedetection easier
+        imgGray = cv.cvtColor(image,cv.COLOR_BGR2GRAY)
+        #cv.imshow('Grayscaled',imgGray)
+
+        #Apply Canny edge detection filter, second & third argument represents min & Max intensity values.
+        edges = cv.Canny(imgGray,0,255,True)
+        #cv.imshow('Edges',edges)
+
+        output = cv.cvtColor(edges,cv.COLOR_GRAY2RGB)
+        output = output + image
+        return output
 
     def BG_Subtraction(self, value, image):
         #Just a test, remove when implementing proper method
@@ -48,7 +57,7 @@ while (True):
     ret, image = cam.read();
 
     # Change the pre.XXXXXX to your desired pre-processing to test it (e.g pre.Contrast(xxxxx) --> pre.Edge_detection(xxxxx))
-    output = pre.Sharpness(2.2, 1, image) 
+    output = pre.Edge_detection(image)
     # Show the original and the processed image 
     cv.imshow('Original', image)
     cv.imshow('Processed', output)
