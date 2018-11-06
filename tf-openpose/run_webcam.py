@@ -79,6 +79,7 @@ if __name__ == '__main__':
     while True:
         ret_val, image = cam.read()
         frame = frame + 1
+        
         # Pre-processing
         preprocessed = pre.Sharpness(2.2, 1, image)
         
@@ -132,4 +133,5 @@ if __name__ == '__main__':
     plt.plot(frameList,jointList)
     plt.show()
     print("The total amount of joints found: " + totalJoints)
+    print("Frame count: " + frame)
     
