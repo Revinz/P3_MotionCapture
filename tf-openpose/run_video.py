@@ -26,6 +26,8 @@ bodyPartSectionsCounter = []  # Amounts of joints per x frames
 
 totalJoints = 0
 
+frameJoints = 0
+
 frame = -1
 
 jointList = []
@@ -67,10 +69,15 @@ if __name__ == '__main__':
             bodyPartCounter += len(human.body_parts)
             # print("Total Parts found: " + bodyPartCounter)
             totalJoints = totalJoints + len(human.body_parts)
+            
+            frameJoints = frameJoints + len(human.body_parts)
+
 
             bodyPartSectionsCounter
 
-        jointList.append(len(human.body_parts))
+        jointList.append(frameJoints)
+        
+        frameJoints = 0
 
         frameList.append(frame)
 
