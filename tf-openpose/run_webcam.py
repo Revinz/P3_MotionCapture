@@ -158,7 +158,7 @@ if __name__ == '__main__':
     plt.plot(frameList,jointList)
     plt.xlabel('Frame')
     plt.ylabel('Body parts found')
-    plt.title('Body parts found in frames')
+    plt.title('Body parts found per frame')
     plt.grid(True)
     plt.show()
     
