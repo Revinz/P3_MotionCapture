@@ -44,7 +44,7 @@ cam = cv.VideoCapture(0)
 pre = Preprocessing()
 
 '''
-while (True):
+#while (True):
     ret, image = cam.read();
 
     # Change the pre.XXXXXX to your desired pre-processing to test it (e.g pre.Contrast(xxxxx) --> pre.Edge_detection(xxxxx))
