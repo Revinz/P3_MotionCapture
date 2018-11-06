@@ -29,6 +29,8 @@ fps_time = 0
 
 totalJoints = 0
 
+frameJoints = 0
+
 frame = 0
 
 jointList = []
@@ -89,6 +91,7 @@ if __name__ == '__main__':
         preprocessed = TfPoseEstimator.draw_humans(preprocessed, humans, imgcopy=False)
 
         # Update the players' joint positions
+        
         for counter, human in enumerate(humans): #For the 2 players
 
             if counter > 1: #Don't bother detecting more than 2 players.
@@ -97,10 +100,14 @@ if __name__ == '__main__':
             bodyPartCounter+=len(human.body_parts)
             #print("Total Parts found: " + bodyPartCounter)
             totalJoints = totalJoints + len(human.body_parts)
+            
+            frameJoints = frameJoints + len(human.body_parts)
 
             bodyPartSectionsCounter
             
-        jointList.append(len(human.body_parts))
+        jointList.append(frameJoints)
+        
+        frameJoints = 0
 
         frameList.append(frame)
 
