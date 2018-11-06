@@ -2,6 +2,8 @@ import argparse
 import logging
 import time
 
+import matplotlib.pyplot as plt
+
 import cv2
 import numpy as np
 
@@ -17,6 +19,17 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 fps_time = 0
+
+#for plotting
+bodyPartCounter = 0  # Total amount of joints found
+bodyPartSectionsCounter = []  # Amounts of joints per x frames
+
+totalJoints = 0
+
+frame = -1
+
+jointList = []
+frameList = []
 
 
 if __name__ == '__main__':
@@ -47,8 +60,24 @@ if __name__ == '__main__':
         cv2.putText(image, "FPS: %f" % (1.0 / (time.time() - fps_time)), (10, 10),  cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         cv2.imshow('tf-pose-estimation result', image)
         fps_time = time.time()
+
+        for human in enumerate(humans):
+
+
+            bodyPartCounter += len(human.body_parts)
+            # print("Total Parts found: " + bodyPartCounter)
+            totalJoints = totalJoints + len(human.body_parts)
+
+            bodyPartSectionsCounter
+
+        jointList.append(len(human.body_parts))
+
+        frameList.append(frame)
+
         if cv2.waitKey(1) == 27:
             break
 
     cv2.destroyAllWindows()
+    plt.plot(frameList, jointList)
+    plt.show()
 logger.debug('finished+')
