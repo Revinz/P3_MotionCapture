@@ -156,6 +156,10 @@ if __name__ == '__main__':
     print("The total amount of joints found: " + str(totalJoints))
     print("Frame count: " + str(frame))
     plt.plot(frameList,jointList)
+    plt.xlabel('Frame')
+    plt.ylabel('Body parts found')
+    plt.title('Body parts found in frames')
+    plt.grid(True)
     plt.show()
     
     
