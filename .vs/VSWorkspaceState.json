@@ -3,6 +3,6 @@
     "",
     "\\tf-openpose"
   ],
-  "SelectedNode": "\\tf-openpose\\run_webcam.py",
+  "SelectedNode": "\\tf-openpose\\preprocess.py",
   "PreviewInSolutionExplorer": false
 }
