@@ -24,7 +24,7 @@ class Preprocessing:
 
     def Sharpness(self, original_image_weight, blurred_image_weight, image):
         #Just a test, remove when implementing proper method
-        blurred_image = cv.GaussianBlur(image, (11,11), 0) #Blur the image 
+        blurred_image = cv.GaussianBlur(image, (9,9), 0) #Blur the image 
         sharpened = cv.addWeighted(image, original_image_weight, blurred_image, -blurred_image_weight, 0, blurred_image)  #Subtract the blurred image from the original image to sharpen it
         # -- More about this approach here: https://en.wikipedia.org/wiki/Unsharp_masking#Digital_unsharp_masking (Called Unsharp_masking)
 
@@ -42,11 +42,13 @@ class Preprocessing:
 # Testing the processing
 cam = cv.VideoCapture(0)
 pre = Preprocessing()
+
+'''
 while (True):
     ret, image = cam.read();
 
     # Change the pre.XXXXXX to your desired pre-processing to test it (e.g pre.Contrast(xxxxx) --> pre.Edge_detection(xxxxx))
-    output = pre.Sharpness(2.5, 1.3, image) 
+    output = pre.Sharpness(2.2, 1, image) 
     # Show the original and the processed image 
     cv.imshow('Original', image)
     cv.imshow('Processed', output)
@@ -55,5 +57,5 @@ while (True):
     if cv.waitKey(1) & 0xFF == ord('q'):
         break
 
-cv.waitKey(0)
-cv.destroyAllWindows()
+cv.destroyAllWindows()  
+'''

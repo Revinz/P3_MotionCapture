@@ -64,7 +64,7 @@ if __name__ == '__main__':
         ret_val, image = cam.read()
 
         # Pre-processing
-        preprocessed = pre.Preprocess(pre.HIGH_CONTRAST, image)
+        preprocessed = pre.Sharpness(2.2, 1, image)
         
         # Detect Joints
         #logger.debug('image process+')
