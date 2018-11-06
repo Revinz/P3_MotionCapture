@@ -1,8 +1,7 @@
 {
   "ExpandedNodes": [
     "",
-    "\\tf-openpose",
-    "\\tf-openpose\\tf_pose"
+    "\\tf-openpose"
   ],
   "SelectedNode": "\\tf-openpose\\run_webcam.py",
   "PreviewInSolutionExplorer": false

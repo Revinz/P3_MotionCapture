@@ -60,9 +60,15 @@ if __name__ == '__main__':
 
     pre = preprocess.Preprocessing();
     #Keep reading the camera input until you exit the program -- You can click ESC to quit the program while it is running
+
+
+    #The joints counters
+    bodyPartCounter = 0 # Total amount of joints found
+    bodyPartSectionsCounter = [] # Amounts of joints per x frames
+    frame = -1
     while True:
         ret_val, image = cam.read()
-
+        frame = frame + 1
         # Pre-processing
         preprocessed = pre.Sharpness(2.2, 1, image)
         
@@ -74,7 +80,6 @@ if __name__ == '__main__':
         #logger.debug('postprocess+')
         preprocessed = TfPoseEstimator.draw_humans(preprocessed, humans, imgcopy=False)
 
-        bodyPartCounter = 0
         # Update the players' joint positions
         for counter, human in enumerate(humans): #For the 2 players
 
@@ -82,12 +87,11 @@ if __name__ == '__main__':
                 break;
 
             bodyPartCounter+=len(human.body_parts)
-            print(bodyPartCounter)
-            #Update the body parts
-            #for part in human.body_parts:
-               # print(human.body_parts[part].uidx)
-               # print(counter)
-               # print("X= %f Y= %f" % (human.body_parts[part].x * 432, human.body_parts[part].y * 368))
+            print("Total Parts found: " + bodyPartCounter)
+
+            bodyPartSectionsCounter
+
+        
 
 
 
