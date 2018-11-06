@@ -95,7 +95,7 @@ if __name__ == '__main__':
                 break;
 
             bodyPartCounter+=len(human.body_parts)
-            print("Total Parts found: " + bodyPartCounter)
+            #print("Total Parts found: " + bodyPartCounter)
             totalJoints = totalJoints + len(human.body_parts)
 
             bodyPartSectionsCounter
