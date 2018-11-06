@@ -3,6 +3,8 @@ import logging
 import time
 import importlib.util
 
+import matplotlib.pyplot as plt
+
 import cv2
 import numpy as np
 
@@ -25,6 +27,12 @@ logger.addHandler(ch)
 
 fps_time = 0
 
+totalJoints = 0
+
+frame = 0
+
+jointList = []
+frameList = []
 
 # Game manager variable reference
 GameManager = ht.Human_Tetris()
@@ -88,10 +96,13 @@ if __name__ == '__main__':
 
             bodyPartCounter+=len(human.body_parts)
             print("Total Parts found: " + bodyPartCounter)
+            totalJoints = totalJoints + len(human.body_parts)
 
             bodyPartSectionsCounter
+            
+        jointList.append(bodyPartCounter)
 
-        
+        frameList.append(frame)
 
 
 
@@ -111,3 +122,6 @@ if __name__ == '__main__':
 
 
     cv2.destroyAllWindows()
+    plt.plot(frameList,jointList)
+    plt.show()
+    
