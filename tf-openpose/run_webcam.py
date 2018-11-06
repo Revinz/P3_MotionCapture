@@ -56,6 +56,7 @@ if __name__ == '__main__':
     #Start the camera
     cam = cv2.VideoCapture(args.camera)
     ret_val, image = cam.read()
+    ret_val, bg = cam.read()
     logger.info('cam image=%dx%d' % (image.shape[1], image.shape[0]))
 
     pre = preprocess.Preprocessing();
@@ -64,7 +65,7 @@ if __name__ == '__main__':
         ret_val, image = cam.read()
 
         # Pre-processing
-        preprocessed = pre.Preprocess(pre.HIGH_CONTRAST, image)
+        preprocessed = pre.Histogram_EQ(image)
         
         # Detect Joints
         #logger.debug('image process+')

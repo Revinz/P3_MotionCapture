@@ -32,10 +32,10 @@ class Preprocessing:
 
     def Histogram_EQ(self, image): # Histogram Equalization
         #Just a test, remove when implementing proper method
-        img_yuv = cv.cvtColor(image, cv.COLOR_BGR2YUV)
+        img_yuv = cv.cvtColor(image, cv.COLOR_RGB2YUV)
         img_yuv[:,:,0] = cv.equalizeHist(img_yuv[:,:,0])
-        cv.imshow('test', img_yuv)
-        eqa_img = cv.cvtColor(img_yuv, cv.COLOR_YUV2BGR)
+        #cv.imshow('test', img_yuv)
+        eqa_img = cv.cvtColor(img_yuv, cv.COLOR_YUV2RGB)
         return eqa_img
 
 
@@ -45,6 +45,8 @@ class Preprocessing:
 # Testing the processing
 cam = cv.VideoCapture(0)
 pre = Preprocessing()
+
+'''
 while (True):
     ret, image = cam.read();
 
@@ -60,3 +62,4 @@ while (True):
 
 cv.waitKey(0)
 cv.destroyAllWindows()
+'''
