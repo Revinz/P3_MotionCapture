@@ -2,6 +2,8 @@ import argparse
 import logging
 import time
 import importlib.util
+from msvcrt import getch
+
 
 import matplotlib.pyplot as plt
 
@@ -71,7 +73,6 @@ if __name__ == '__main__':
     pre = preprocess.Preprocessing();
     #Keep reading the camera input until you exit the program -- You can click ESC to quit the program while it is running
 
-
     #The joints counters
     bodyPartCounter = 0 # Total amount of joints found
     bodyPartSectionsCounter = [] # Amounts of joints per x frames
@@ -79,10 +80,32 @@ if __name__ == '__main__':
     while True:
         ret_val, image = cam.read()
         frame = frame + 1
-        
-        # Pre-processing
+
+        # Pre-processing        
         preprocessed = pre.Sharpness(2.2, 1, image)
         
+        '''
+        keyPress = cv2.waitKey(1)
+        #Demo day -- filter selection
+        if keyPress != -1:
+            preNum = keyPress
+            
+        preprocessed = image
+
+        if preNum == 49: # 1
+            preprocessed = image
+        elif preNum == 50: # 2
+            preprocessed = pre.Contrast(image)
+        elif preNum == 51: # 3
+            preprocessed = pre.Sharpness(2.2, 1, image)
+        elif preNum == 52: # 4
+            preprocessed = pre.Edge_detection(image)
+        elif preNum == 53: # 5
+            preprocessed = pre.BG_Subtraction(image)
+        elif preNum == 54: # 6
+            preprocessed = pre.Histogram_EQ(image)
+        '''
+
         # Detect Joints
         #logger.debug('image process+')
         humans = e.inference(preprocessed, resize_to_default=(w > 0 and h > 0), upsample_size=args.resize_out_ratio) # Array of the humans with joints.
@@ -122,7 +145,7 @@ if __name__ == '__main__':
                     "FPS: %f" % (1.0 / (time.time() - fps_time)),
                     (10, 10),  cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                     (0, 255, 0), 2)
-        cv2.imshow('tf-pose-estimation result', preprocessed)
+        cv2.imshow('tf-pose-estimation result',  preprocessed)
         fps_time = time.time()
         if cv2.waitKey(1) == 27:
             break
