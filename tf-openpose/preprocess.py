@@ -16,10 +16,11 @@ class Preprocessing:
         new_image = image * 1.5
         return new_image
 
-    def BG_Subtraction(self, image):
+    def BG_Subtraction(self, background_image, image):
         #Just a test, remove when implementing proper method
-        fgmask = fgbg.apply(image) #Applying subtraction to the video
-        return fgmask
+        if image.shape == background_image.shape:
+            difference = cv.subtract(image, background_image)
+        return difference
 
     def Sharpness(self, original_image_weight, blurred_image_weight, image):
         #Just a test, remove when implementing proper method
@@ -31,9 +32,11 @@ class Preprocessing:
 
     def Histogram_EQ(self, image): # Histogram Equalization
         #Just a test, remove when implementing proper method
-        gray_image = cv.cvtColor(image, cv.COLOR_BGR2GRAY) #Change the input to a grayscaled image
-        equ = cv.equalizeHist(gray_image) #Equalize the histogram
-        return equ
+        img_yuv = cv.cvtColor(image, cv.COLOR_BGR2YUV)
+        img_yuv[:,:,0] = cv.equalizeHist(img_yuv[:,:,0])
+        cv.imshow('test', img_yuv)
+        eqa_img = cv.cvtColor(img_yuv, cv.COLOR_YUV2BGR)
+        return eqa_img
 
 
 
@@ -46,7 +49,7 @@ while (True):
     ret, image = cam.read();
 
     # Change the pre.XXXXXX to your desired pre-processing to test it (e.g pre.Contrast(xxxxx) --> pre.Edge_detection(xxxxx))
-    output = pre.Sharpness(2.5, 1.3, image)
+    output = pre.Histogram_EQ(image)
     # Show the original and the processed image 
     cv.imshow('Original', image)
     cv.imshow('Processed', output)
