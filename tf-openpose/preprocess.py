@@ -2,7 +2,6 @@ import cv2 as cv
 import numpy as np
 
 # Just run this file to test the effects on the camera -- no OpenPose
-fgbg = cv.createBackgroundSubtractorMOG2() #Creating a subtractor 
 class Preprocessing:
     ### Change what you need to change. These are just setups to get you all started
 
@@ -18,9 +17,13 @@ class Preprocessing:
 
     def BG_Subtraction(self, background_image, image):
         #Just a test, remove when implementing proper method
-        if image.shape == background_image.shape:
-            difference = cv.subtract(image, background_image)
-        return difference
+        h, w, bbp = np.shape(image)
+
+        for y in range(h):
+            for x in range(w):
+                    if np.any(background_image[y][x] == image[y][x]):
+                        background_image[y][x]=(0,0,0)
+        return image
 
     def Sharpness(self, original_image_weight, blurred_image_weight, image):
         #Just a test, remove when implementing proper method
@@ -46,14 +49,16 @@ class Preprocessing:
 cam = cv.VideoCapture(0)
 pre = Preprocessing()
 
-'''
+
 while (True):
     ret, image = cam.read();
+    ret, image2 = cam.read();
+
 
     # Change the pre.XXXXXX to your desired pre-processing to test it (e.g pre.Contrast(xxxxx) --> pre.Edge_detection(xxxxx))
-    output = pre.Histogram_EQ(image)
+    output = pre.BG_Subtraction(image2,image)
     # Show the original and the processed image 
-    cv.imshow('Original', image)
+    cv.imshow('Original', image2)
     cv.imshow('Processed', output)
 
     # Hit 'Q' to stop -- doesn't close the windows tho
@@ -62,4 +67,3 @@ while (True):
 
 cv.waitKey(0)
 cv.destroyAllWindows()
-'''
