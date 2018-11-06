@@ -131,4 +131,5 @@ if __name__ == '__main__':
     cv2.destroyAllWindows()
     plt.plot(frameList,jointList)
     plt.show()
+    print("The total amount of joints found: " + totalJoints)
     
