@@ -100,7 +100,7 @@ if __name__ == '__main__':
 
             bodyPartSectionsCounter
             
-        jointList.append(bodyPartCounter)
+        jointList.append(len(human.body_parts))
 
         frameList.append(frame)
 
