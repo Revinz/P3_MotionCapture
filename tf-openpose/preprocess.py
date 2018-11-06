@@ -2,9 +2,8 @@ import cv2 as cv
 import numpy as np
 
 # Just run this file to test the effects on the camera -- no OpenPose
-
+fgbg = cv.createBackgroundSubtractorMOG2() #Creating a subtractor 
 class Preprocessing:
-
     ### Change what you need to change. These are just setups to get you all started
 
     def Contrast(self, value, image): # Easily used for both high and low contrast
@@ -17,10 +16,10 @@ class Preprocessing:
         new_image = image * 1.5
         return new_image
 
-    def BG_Subtraction(self, value, image):
+    def BG_Subtraction(self, image):
         #Just a test, remove when implementing proper method
-        new_image = image * 1.5
-        return new_image
+        fgmask = fgbg.apply(image) #Applying subtraction to the video
+        return fgmask
 
     def Sharpness(self, original_image_weight, blurred_image_weight, image):
         #Just a test, remove when implementing proper method
@@ -30,10 +29,11 @@ class Preprocessing:
 
         return sharpened
 
-    def Histogram_EQ(self, value, image): # Histogram Equalization
+    def Histogram_EQ(self, image): # Histogram Equalization
         #Just a test, remove when implementing proper method
-        new_image = image
-        return new_image
+        gray_image = cv.cvtColor(image, cv.COLOR_BGR2GRAY) #Change the input to a grayscaled image
+        equ = cv.equalizeHist(gray_image) #Equalize the histogram
+        return equ
 
 
 
@@ -46,7 +46,7 @@ while (True):
     ret, image = cam.read();
 
     # Change the pre.XXXXXX to your desired pre-processing to test it (e.g pre.Contrast(xxxxx) --> pre.Edge_detection(xxxxx))
-    output = pre.Sharpness(2.5, 1.3, image) 
+    output = pre.Sharpness(2.5, 1.3, image)
     # Show the original and the processed image 
     cv.imshow('Original', image)
     cv.imshow('Processed', output)
