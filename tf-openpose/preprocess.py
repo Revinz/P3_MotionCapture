@@ -12,20 +12,10 @@ class Preprocessing:
         new_image = image * 1.5
         return new_image
 
-    def Edge_detection(self, image):
-        #Converts image to grayscale for better edge detection (May not have any effect, results vary, needs to be tested properly)
-        cv.cvtColor(image,cv.COLOR_BGR2GRAY)
-
-        #Apply Canny edge detection filter, second & third argument represents min & Max intensity values.
-        edges = cv.Canny(image, 100, 150, True)
-
-        #For every value from 0 to image width(x) and image height(y), check if the pixel in edges is white, if yes, set the corresponding pixel in image to white
-        for x in range(image.shape[0]):
-            for y in range(image.shape[1]):
-                if edges[x, y] > 1:
-                    image[x, y] = [255, 255, 255]
-        cv.imshow('edges', edges)
-        return image
+    def Edge_detection(self, value, image):
+        #Just a test, remove when implementing proper method
+        new_image = image * 1.5
+        return new_image
 
     def BG_Subtraction(self, value, image):
         #Just a test, remove when implementing proper method
@@ -46,17 +36,19 @@ class Preprocessing:
         return new_image
 
 
+
 # --- Don't put anything related to the class below this --- #
+
 # Testing the processing
 cam = cv.VideoCapture(0)
 pre = Preprocessing()
 
-while (True):
+'''
+#while (True):
     ret, image = cam.read();
 
     # Change the pre.XXXXXX to your desired pre-processing to test it (e.g pre.Contrast(xxxxx) --> pre.Edge_detection(xxxxx))
-    #output = pre.Sharpness(2.2, 1, image)
-    output = pre.Edge_detection(image)
+    output = pre.Sharpness(2.2, 1, image) 
     # Show the original and the processed image 
     cv.imshow('Original', image)
     cv.imshow('Processed', output)
@@ -65,4 +57,5 @@ while (True):
     if cv.waitKey(1) & 0xFF == ord('q'):
         break
 
-cv.destroyAllWindows()
+cv.destroyAllWindows()  
+'''
