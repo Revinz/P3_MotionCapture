@@ -73,8 +73,6 @@ if __name__ == '__main__':
     pre = preprocess.Preprocessing();
     #Keep reading the camera input until you exit the program -- You can click ESC to quit the program while it is running
 
-    preNum = 49
-
     #The joints counters
     bodyPartCounter = 0 # Total amount of joints found
     bodyPartSectionsCounter = [] # Amounts of joints per x frames
@@ -86,7 +84,7 @@ if __name__ == '__main__':
         # Pre-processing        
         preprocessed = pre.Edge_detection(image)
         
-        
+        '''
         keyPress = cv2.waitKey(1)
         #Demo day -- filter selection
         if keyPress != -1:
@@ -103,8 +101,10 @@ if __name__ == '__main__':
         elif preNum == 52: # 4
             preprocessed = pre.Edge_detection(image)
         elif preNum == 53: # 5
+            preprocessed = pre.BG_Subtraction(image)
+        elif preNum == 54: # 6
             preprocessed = pre.Histogram_EQ(image)
-        
+        '''
 
         # Detect Joints
         #logger.debug('image process+')
@@ -147,7 +147,7 @@ if __name__ == '__main__':
                     (0, 255, 0), 2)
         cv2.imshow('tf-pose-estimation result',  preprocessed)
         fps_time = time.time()
-        if keyPress == 27:
+        if cv2.waitKey(1) == 27:
             break
         logger.debug('finished+')
 
