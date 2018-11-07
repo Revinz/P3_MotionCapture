@@ -87,6 +87,10 @@ if __name__ == '__main__':
         preprocessed = pre.Sharpness(2.2, 1, image)
         
         
+<<<<<<< HEAD
+=======
+        
+>>>>>>> parent of 213d3eb... Revert "trying to merge"
         keyPress = cv2.waitKey(1)
         #Demo day -- filter selection
         if keyPress != -1:
