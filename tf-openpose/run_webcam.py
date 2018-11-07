@@ -84,7 +84,7 @@ if __name__ == '__main__':
         frame = frame + 1
 
         # Pre-processing        
-        preprocessed = pre.Edge_detection(image)
+        #preprocessed = pre.Edge_detection(image)
         
         
         keyPress = cv2.waitKey(1)
@@ -97,12 +97,14 @@ if __name__ == '__main__':
         if preNum == 49: # 1
             preprocessed = image
         elif preNum == 50: # 2
-            preprocessed = pre.Contrast(image)
+            preprocessed = pre.Contrast(1.5, image)
         elif preNum == 51: # 3
-            preprocessed = pre.Sharpness(2.2, 1, image)
+            preprocessed = pre.Contrast(0.65, image)
         elif preNum == 52: # 4
-            preprocessed = pre.Edge_detection(image)
+            preprocessed = pre.Sharpness(2.2, 1, image)
         elif preNum == 53: # 5
+            preprocessed = pre.Edge_detection(image)
+        elif preNum == 54: # 6
             preprocessed = pre.Histogram_EQ(image)
         
 
