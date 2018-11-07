@@ -17,20 +17,14 @@ class Preprocessing:
         cv.cvtColor(image,cv.COLOR_BGR2GRAY)
 
         #Apply Canny edge detection filter, second & third argument represents min & Max intensity values.
-        edges = cv.Canny(image, 100, 150, True)       
+        edges = cv.Canny(image, 100, 150, True)
+
         #For every value from 0 to image width(x) and image height(y), check if the pixel in edges is white, if yes, set the corresponding pixel in image to white
-        '''
         for x in range(image.shape[0]):
             for y in range(image.shape[1]):
                 if edges[x, y] > 1:
                     image[x, y] = [255, 255, 255]
-        '''
-
-        mask = cv.inRange(edges, 10, 255)
-
-        image = cv.bitwise_not(image, image, mask=mask)
-
-        #cv.imshow('edges', edges)
+        cv.imshow('edges', edges)
         return image
 
     def BG_Subtraction(self, value, image):
@@ -56,7 +50,7 @@ class Preprocessing:
 # Testing the processing
 cam = cv.VideoCapture(0)
 pre = Preprocessing()
-'''
+
 while (True):
     ret, image = cam.read();
 
@@ -72,4 +66,3 @@ while (True):
         break
 
 cv.destroyAllWindows()
-'''
