@@ -4,7 +4,6 @@ import time
 import importlib.util
 from msvcrt import getch
 
-
 import matplotlib.pyplot as plt
 
 import cv2
@@ -17,7 +16,6 @@ from tf_pose.networks import get_graph_path, model_wh
 # Import our stuff
 import human_tetris as ht
 import preprocess
-
 
 logger = logging.getLogger('TfPoseEstimator-WebCam')
 logger.setLevel(logging.DEBUG)
@@ -43,7 +41,7 @@ GameManager = ht.Human_Tetris()
 
 if __name__ == '__main__':
 
-    #This part just parses the string input from the command line
+    # This part just parses the string input from the command line
     parser = argparse.ArgumentParser(description='tf-pose-estimation realtime webcam')
     parser.add_argument('--camera', type=int, default=0)
 
@@ -65,109 +63,95 @@ if __name__ == '__main__':
         e = TfPoseEstimator(get_graph_path(args.model), target_size=(432, 368))
     logger.debug('cam read+')
 
-    #Start the camera
+    # Start the camera
     cam = cv2.VideoCapture(args.camera)
     ret_val, image = cam.read()
     logger.info('cam image=%dx%d' % (image.shape[1], image.shape[0]))
 
     pre = preprocess.Preprocessing();
-    #Keep reading the camera input until you exit the program -- You can click ESC to quit the program while it is running
+    # Keep reading the camera input until you exit the program -- You can click ESC to quit the program while it is running
 
     preNum = 49
 
-    #The joints counters
-    bodyPartCounter = 0 # Total amount of joints found
-    bodyPartSectionsCounter = [] # Amounts of joints per x frames
+    # The joints counters
+    bodyPartCounter = 0  # Total amount of joints found
+    bodyPartSectionsCounter = []  # Amounts of joints per x frames
     frame = -1
     while True:
         ret_val, image = cam.read()
         frame = frame + 1
 
         # Pre-processing        
-        preprocessed = pre.Sharpness(2.2, 1, image)
-        
-        
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-        
->>>>>>> parent of 213d3eb... Revert "trying to merge"
-=======
-        
->>>>>>> parent of 213d3eb... Revert "trying to merge"
+        preprocessed = pre.Edge_detection(image)
+
         keyPress = cv2.waitKey(1)
-        #Demo day -- filter selection
+        # Demo day -- filter selection
         if keyPress != -1:
             preNum = keyPress
-            
+
         preprocessed = image
 
-        if preNum == 49: # 1
+        if preNum == 49:  # 1
             preprocessed = image
-        elif preNum == 50: # 2
+        elif preNum == 50:  # 2
             preprocessed = pre.Contrast(image)
-        elif preNum == 51: # 3
+        elif preNum == 51:  # 3
             preprocessed = pre.Sharpness(2.2, 1, image)
-        elif preNum == 52: # 4
+        elif preNum == 52:  # 4
             preprocessed = pre.Edge_detection(image)
-        elif preNum == 53: # 5
+        elif preNum == 53:  # 5
             preprocessed = pre.Histogram_EQ(image)
-        
 
         # Detect Joints
-        #logger.debug('image process+')
-        humans = e.inference(preprocessed, resize_to_default=(w > 0 and h > 0), upsample_size=args.resize_out_ratio) # Array of the humans with joints.
-            
-        #Draw joints -- will be hidden later. 
-        #logger.debug('postprocess+')
+        # logger.debug('image process+')
+        humans = e.inference(preprocessed, resize_to_default=(w > 0 and h > 0),
+                             upsample_size=args.resize_out_ratio)  # Array of the humans with joints.
+
+        # Draw joints -- will be hidden later.
+        # logger.debug('postprocess+')
         preprocessed = TfPoseEstimator.draw_humans(preprocessed, humans, imgcopy=False)
 
         # Update the players' joint positions
-        
-        for counter, human in enumerate(humans): #For the 2 players
 
-            if counter > 1: #Don't bother detecting more than 2 players.
+        for counter, human in enumerate(humans):  # For the 2 players
+
+            if counter > 1:  # Don't bother detecting more than 2 players.
                 break;
 
-            bodyPartCounter+=len(human.body_parts)
-            #print("Total Parts found: " + bodyPartCounter)
+            bodyPartCounter += len(human.body_parts)
+            # print("Total Parts found: " + bodyPartCounter)
             totalJoints = totalJoints + len(human.body_parts)
-            
+
             frameJoints = frameJoints + len(human.body_parts)
 
             bodyPartSectionsCounter
-            
+
         jointList.append(frameJoints)
-        
+
         frameJoints = 0
 
         frameList.append(frame)
 
-
-
         # Generate joint image with all the currently known joint locations
 
         # Show the image
-        #logger.debug('show+')
+        # logger.debug('show+')
         cv2.putText(preprocessed,
                     "FPS: %f" % (1.0 / (time.time() - fps_time)),
-                    (10, 10),  cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                    (10, 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                     (0, 255, 0), 2)
-        cv2.imshow('tf-pose-estimation result',  preprocessed)
+        cv2.imshow('tf-pose-estimation result', preprocessed)
         fps_time = time.time()
         if keyPress == 27:
             break
         logger.debug('finished+')
 
-
     cv2.destroyAllWindows()
     print("The total amount of joints found: " + str(totalJoints))
     print("Frame count: " + str(frame))
-    plt.plot(frameList,jointList)
+    plt.plot(frameList, jointList)
     plt.xlabel('Frame')
     plt.ylabel('Body parts found')
     plt.title('Body parts found per frame')
     plt.grid(True)
     plt.show()
-    
-    
