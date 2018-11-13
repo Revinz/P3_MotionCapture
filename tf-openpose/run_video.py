@@ -1,3 +1,4 @@
+
 import argparse
 import logging
 import time
@@ -28,7 +29,7 @@ totalJoints = 0
 
 frameJoints = 0
 
-frame = -1
+frame = 0
 
 jointList = []
 frameList = []
@@ -36,7 +37,7 @@ frameList = []
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='tf-pose-estimation Video')
-    parser.add_argument('--video', type=str, default='')
+    parser.add_argument('--video', type=str, default='test.mp4')
     parser.add_argument('--resolution', type=str, default='432x368', help='network input resolution. default=432x368')
     parser.add_argument('--model', type=str, default='mobilenet_thin', help='cmu / mobilenet_thin')
     parser.add_argument('--show-process', type=bool, default=False,
@@ -53,28 +54,33 @@ if __name__ == '__main__':
         print("Error opening video stream or file")
     while cap.isOpened():
         ret_val, image = cap.read()
+        frame += 1
 
-        humans = e.inference(image)
+
+        humans = e.inference(image, resize_to_default=True, upsample_size=4.0)
         if not args.showBG:
             image = np.zeros(image.shape)
         image = TfPoseEstimator.draw_humans(image, humans, imgcopy=False)
 
+        cv2.putText(image, "Frame: " + str(frame), (10,30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         cv2.putText(image, "FPS: %f" % (1.0 / (time.time() - fps_time)), (10, 10),  cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         cv2.imshow('tf-pose-estimation result', image)
         fps_time = time.time()
 
-        for human in enumerate(humans):
+        
+        for counter, human in enumerate(humans): #For the 2 players
 
+            if counter > 1: #Don't bother detecting more than 2 players.
+                break;
 
-            bodyPartCounter += len(human.body_parts)
-            # print("Total Parts found: " + bodyPartCounter)
+            bodyPartCounter+=len(human.body_parts)
+            #print("Total Parts found: " + bodyPartCounter)
             totalJoints = totalJoints + len(human.body_parts)
             
             frameJoints = frameJoints + len(human.body_parts)
 
-
             bodyPartSectionsCounter
-
+            
         jointList.append(frameJoints)
         
         frameJoints = 0
@@ -82,6 +88,10 @@ if __name__ == '__main__':
         frameList.append(frame)
 
         if cv2.waitKey(1) == 27:
+            break
+
+        #Stop video after 300 frames -- otherwise it might result in an error
+        if (frame >= 300):
             break
 
     cv2.destroyAllWindows()

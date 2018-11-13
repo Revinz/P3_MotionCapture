@@ -15,7 +15,6 @@ from tf_pose.estimator import TfPoseEstimator
 from tf_pose.networks import get_graph_path, model_wh
 
 # Import our stuff
-import human_tetris as ht
 import preprocess
 
 
@@ -37,9 +36,6 @@ frame = 0
 
 jointList = []
 frameList = []
-
-# Game manager variable reference
-GameManager = ht.Human_Tetris()
 
 if __name__ == '__main__':
 
