@@ -14,7 +14,6 @@ from tf_pose.estimator import TfPoseEstimator
 from tf_pose.networks import get_graph_path, model_wh
 
 # Import our stuff
-import human_tetris as ht
 import preprocess
 
 logger = logging.getLogger('TfPoseEstimator-WebCam')
@@ -35,9 +34,6 @@ frame = 0
 
 jointList = []
 frameList = []
-
-# Game manager variable reference
-GameManager = ht.Human_Tetris()
 
 if __name__ == '__main__':
 
@@ -80,9 +76,7 @@ if __name__ == '__main__':
     while True:
         ret_val, image = cam.read()
         frame = frame + 1
-
-        # Pre-processing        
-        preprocessed = pre.Edge_detection(image)
+        #preprocessed = pre.Edge_detection(image)
 
         keyPress = cv2.waitKey(1)
         # Demo day -- filter selection
@@ -93,13 +87,16 @@ if __name__ == '__main__':
 
         if preNum == 49:  # 1
             preprocessed = image
-        elif preNum == 50:  # 2
-            preprocessed = pre.Contrast(image)
-        elif preNum == 51:  # 3
+        elif preNum == 50: # 2
+            preprocessed = pre.Contrast(1.5, image)
+        elif preNum == 51: # 3
+            preprocessed = pre.Contrast(0.65, image)
+        elif preNum == 52: # 4
             preprocessed = pre.Sharpness(2.2, 1, image)
-        elif preNum == 52:  # 4
+        elif preNum == 53: # 5
             preprocessed = pre.Edge_detection(image)
-        elif preNum == 53:  # 5
+        elif preNum == 54: # 6
+
             preprocessed = pre.Histogram_EQ(image)
 
         # Detect Joints

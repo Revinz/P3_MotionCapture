@@ -9,7 +9,9 @@ class Preprocessing:
 
     def Contrast(self, value, image): # Easily used for both high and low contrast
         #Just a test, remove when implementing proper method
-        new_image = image * 1.5
+        hsv = cv.cvtColor(image, cv.COLOR_RGB2HSV)
+        hsv[...,2] = cv.multiply(hsv[...,2], value)
+        new_image = cv.cvtColor(hsv, cv.COLOR_HSV2RGB)
         return new_image
 
     def Edge_detection(self, image):
@@ -20,11 +22,12 @@ class Preprocessing:
         edges = cv.Canny(image, 100, 150, True)
 
         #For every value from 0 to image width(x) and image height(y), check if the pixel in edges is white, if yes, set the corresponding pixel in image to white
-        for x in range(image.shape[0]):
-            for y in range(image.shape[1]):
-                if edges[x, y] > 1:
-                    image[x, y] = [255, 255, 255]
-        cv.imshow('edges', edges)
+
+        mask = cv.inRange(edges, 10, 255)
+
+        image = cv.bitwise_not(image, image, mask=mask)
+
+        #cv.imshow('edges', edges)
         return image
 
     def BG_Subtraction(self, value, image):
@@ -40,10 +43,12 @@ class Preprocessing:
 
         return sharpened
 
-    def Histogram_EQ(self, value, image): # Histogram Equalization
-        #Just a test, remove when implementing proper method
-        new_image = image
-        return new_image
+    def Histogram_EQ(self, image): # Histogram Equalization
+        img_yuv = cv.cvtColor(image, cv.COLOR_RGB2YUV)
+        img_yuv[:,:,0] = cv.equalizeHist(img_yuv[:,:,0])
+        #cv.imshow('test', img_yuv)
+        eqa_img = cv.cvtColor(img_yuv, cv.COLOR_YUV2RGB)
+        return eqa_img
 
 
 # --- Don't put anything related to the class below this --- #
@@ -56,7 +61,7 @@ while (True):
 
     # Change the pre.XXXXXX to your desired pre-processing to test it (e.g pre.Contrast(xxxxx) --> pre.Edge_detection(xxxxx))
     #output = pre.Sharpness(2.2, 1, image)
-    output = pre.Edge_detection(image)
+    output = pre.Contrast(1.5, image)
     # Show the original and the processed image 
     cv.imshow('Original', image)
     cv.imshow('Processed', output)
