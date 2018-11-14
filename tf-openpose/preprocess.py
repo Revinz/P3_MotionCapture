@@ -33,7 +33,17 @@ class Preprocessing:
     def BG_Subtraction(self, BG, image):
         h, w, bbp = np.shape(BG)
 
-        image = np.where(image != BG, image, 0)
+        BG_hsv = cv.cvtColor(BG, cv.COLOR_RGB2HSV)
+        imageHsv = cv.cvtColor(image, cv.COLOR_RGB2HSV)
+        
+
+        diff = cv.absdiff(imageHsv[..., 2], BG_hsv[..., 2])
+        Threshhold = 45
+        diff = np.where(diff > Threshhold, imageHsv[..., 2], 0)
+        imageHsv[..., 2] = diff
+        image = cv.cvtColor(imageHsv, cv.COLOR_HSV2RGB)
+
+        #image = np.where(image != BG, image, image * 0)
 
         return image
 
