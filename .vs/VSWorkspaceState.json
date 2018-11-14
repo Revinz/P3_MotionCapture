@@ -3,6 +3,6 @@
     "",
     "\\tf-openpose"
   ],
-  "SelectedNode": "\\tf-openpose\\run_video.py",
+  "SelectedNode": "\\tf-openpose\\preprocess.py",
   "PreviewInSolutionExplorer": false
 }

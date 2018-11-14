@@ -96,7 +96,6 @@ if __name__ == '__main__':
         elif preNum == 53: # 5
             preprocessed = pre.Edge_detection(image)
         elif preNum == 54: # 6
-
             preprocessed = pre.Histogram_EQ(image)
 
         # Detect Joints

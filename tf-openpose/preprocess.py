@@ -30,13 +30,12 @@ class Preprocessing:
         #cv.imshow('edges', edges)
         return image
     
-    def BG_Subtraction(self, image, image1):
-        h, w, bbp = np.shape(image)
-        for y in range(h):
-            for x in range(w):
-                    if np.any(image1[y][x] == image[y][x]):
-                        image1[y][x]=(0,0,0)
-        return image1
+    def BG_Subtraction(self, BG, image):
+        h, w, bbp = np.shape(BG)
+
+        image = np.where(image != BG, image, 0)
+
+        return image
 
     def Sharpness(self, original_image_weight, blurred_image_weight, image):
         #Just a test, remove when implementing proper method
@@ -58,9 +57,12 @@ class Preprocessing:
 cam = cv.VideoCapture(0)
 pre = Preprocessing()
 
+ret2, background_image = cam.read();
 while (True):
     ret, image = cam.read();
-    background_image = cv.imread('images/image_name'); #Insert the image name instead of image_name
+
+    #background_image = cv.imread('images/image_name'); #Insert the image name instead of image_name
+    
 
     # Change the pre.XXXXXX to your desired pre-processing to test it (e.g pre.Contrast(xxxxx) --> pre.Edge_detection(xxxxx))
     #output = pre.Sharpness(2.2, 1, image)
