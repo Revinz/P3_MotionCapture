@@ -29,11 +29,14 @@ class Preprocessing:
 
         #cv.imshow('edges', edges)
         return image
-
-    def BG_Subtraction(self, value, image):
-        #Just a test, remove when implementing proper method
-        new_image = image * 1.5
-        return new_image
+    
+    def BG_Subtraction(self, image, image1):
+        h, w, bbp = np.shape(image)
+        for y in range(h):
+            for x in range(w):
+                    if np.any(image1[y][x] == image[y][x]):
+                        image1[y][x]=(0,0,0)
+        return image1
 
     def Sharpness(self, original_image_weight, blurred_image_weight, image):
         #Just a test, remove when implementing proper method
@@ -46,7 +49,6 @@ class Preprocessing:
     def Histogram_EQ(self, image): # Histogram Equalization
         img_yuv = cv.cvtColor(image, cv.COLOR_RGB2YUV)
         img_yuv[:,:,0] = cv.equalizeHist(img_yuv[:,:,0])
-        #cv.imshow('test', img_yuv)
         eqa_img = cv.cvtColor(img_yuv, cv.COLOR_YUV2RGB)
         return eqa_img
 
@@ -58,10 +60,11 @@ pre = Preprocessing()
 
 while (True):
     ret, image = cam.read();
+    background_image = cv.imread('images/image_name'); #Insert the image name instead of image_name
 
     # Change the pre.XXXXXX to your desired pre-processing to test it (e.g pre.Contrast(xxxxx) --> pre.Edge_detection(xxxxx))
     #output = pre.Sharpness(2.2, 1, image)
-    output = pre.Contrast(1.5, image)
+    output = pre.BG_Subtraction(background_image, image)
     # Show the original and the processed image 
     cv.imshow('Original', image)
     cv.imshow('Processed', output)
