@@ -60,10 +60,17 @@ if __name__ == '__main__':
         ret_val, image = cap.read()
         frame += 1
 
-        preprocessed = pre.Edge_detection(image) ##Change the pre.XXXX to the preprocessing technique you want. Remember to pass all the required parameters
-        
-        
-        image = preprocessed
+        preprocessed = pre.Contrast(1.5,image) ##Change the pre.XXXX to the preprocessing technique you want. Remember to pass all the required parameters
+        #0.5 for low contrast og 1.5 for high contrast
+
+        #preprocessed = pre.Edge_detection(image)
+
+        #preprocessed = pre.Histogram_EQ(image)
+
+        #preprocessed = pre.Sharpness(5,4,image)
+        # Default values: 5, 4
+
+        image = preprocessed #Outcomment this to only have openpose (groundtruth)
 
         humans = e.inference(image, resize_to_default=True, upsample_size=4.0)
 

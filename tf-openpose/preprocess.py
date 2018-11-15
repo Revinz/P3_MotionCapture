@@ -8,7 +8,7 @@ class Preprocessing:
     ### Change what you need to change. These are just setups to get you all started
 
     def Contrast(self, value, image): # Easily used for both high and low contrast
-        #Just a test, remove when implementing proper method
+        #Just a test, remove when implementing proper method 0.5 for low contrast og 1.5 for high contrast
         hsv = cv.cvtColor(image, cv.COLOR_RGB2HSV)
         hsv[...,2] = cv.multiply(hsv[...,2], value)
         new_image = cv.cvtColor(hsv, cv.COLOR_HSV2RGB)
@@ -52,6 +52,7 @@ class Preprocessing:
         blurred_image = cv.GaussianBlur(image, (9,9), 0) #Blur the image 
         sharpened = cv.addWeighted(image, original_image_weight, blurred_image, -blurred_image_weight, 0, blurred_image)  #Subtract the blurred image from the original image to sharpen it
         # -- More about this approach here: https://en.wikipedia.org/wiki/Unsharp_masking#Digital_unsharp_masking (Called Unsharp_masking)
+        #Default values: 1.5, 1
 
         return sharpened
 
