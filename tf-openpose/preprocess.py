@@ -67,6 +67,7 @@ class Preprocessing:
 cam = cv.VideoCapture(0)
 pre = Preprocessing()
 
+'''
 ret2, background_image = cam.read();
 while (True):
     ret, image = cam.read();
@@ -86,3 +87,4 @@ while (True):
         break
 
 cv.destroyAllWindows()
+'''

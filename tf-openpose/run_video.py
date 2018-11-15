@@ -11,6 +11,8 @@ import numpy as np
 from tf_pose.estimator import TfPoseEstimator
 from tf_pose.networks import get_graph_path, model_wh
 
+import preprocess
+
 logger = logging.getLogger('TfPoseEstimator-Video')
 logger.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
@@ -50,12 +52,18 @@ if __name__ == '__main__':
     e = TfPoseEstimator(get_graph_path(args.model), target_size=(w, h))
     cap = cv2.VideoCapture(args.video)
 
+    pre = preprocess.Preprocessing();
+
     if cap.isOpened() is False:
         print("Error opening video stream or file")
     while cap.isOpened():
         ret_val, image = cap.read()
         frame += 1
 
+        preprocessed = pre.Edge_detection(image) ##Change the pre.XXXX to the preprocessing technique you want. Remember to pass all the required parameters
+        
+        
+        image = preprocessed
 
         humans = e.inference(image, resize_to_default=True, upsample_size=4.0)
 
