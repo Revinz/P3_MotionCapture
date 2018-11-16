@@ -22,11 +22,16 @@ class Preprocessing:
         edges = cv.Canny(image, 100, 150, True)
 
         #For every value from 0 to image width(x) and image height(y), check if the pixel in edges is white, if yes, set the corresponding pixel in image to white
+        mask = cv.inRange(edges, 1, 255)
 
-        mask = cv.inRange(edges, 10, 255)
+        #Convert the mask to be an RGB image
+        mask = cv.cvtColor(mask, cv.COLOR_GRAY2RGB)
 
-        image = cv.bitwise_not(image, image, mask=mask)
-
+        #mask = cv.bitwise_not(mask, mask) #Remove comment to make the outline black -- also change the 'black' to white in the np.where statement!
+        white = [255, 255, 255]
+        black = [0, 0, 0]
+        # Where the mask is not black, make the pixel white else keep the image's original color
+        image = np.where(mask != black, mask, image)
         #cv.imshow('edges', edges)
         return image
     
