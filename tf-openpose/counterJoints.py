@@ -1,4 +1,6 @@
 
+import matplotlib.pyplot as plt
+
 class JointsCounter:
 
     #for plotting
@@ -19,17 +21,26 @@ class JointsCounter:
     def CountJoints(self, humans):
         for counter, human in enumerate(humans): #For the 2 players
 
-            bodyPartCounter+=len(human.body_parts)
+            self.bodyPartCounter+=len(human.body_parts)
             #print("Total Parts found: " + bodyPartCounter)
-            totalJoints = totalJoints + len(human.body_parts)
+            self.totalJoints = self.totalJoints + len(human.body_parts)
             
-            frameJoints = frameJoints + len(human.body_parts)
+            self.frameJoints = self.frameJoints + len(human.body_parts)
 
-            bodyPartSectionsCounter
+            self.bodyPartSectionsCounter
             
-        jointList.append(frameJoints)
+        self.jointList.append(self.frameJoints)
         
-        frameJoints = 0
+        self.frameJoints = 0
 
-        frameList.append(frame)
+        self.frameList.append(self.frame)
 
+    def ShowJointPlot(self):
+        print("The total amount of joints found: " + str(self.totalJoints))
+        print("Frame count: " + str(self.frame))
+        plt.plot(self.frameList, self.jointList)
+        plt.xlabel('Frame')
+        plt.ylabel('Body parts found')
+        plt.title('Body parts found per frame')
+        plt.grid(True)
+        plt.show()

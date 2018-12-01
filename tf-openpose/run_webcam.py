@@ -15,6 +15,7 @@ from tf_pose.networks import get_graph_path, model_wh
 
 # Import our stuff
 import preprocess
+import counterJoints
 
 logger = logging.getLogger('TfPoseEstimator-WebCam')
 logger.setLevel(logging.DEBUG)
@@ -25,15 +26,6 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 fps_time = 0
-
-totalJoints = 0
-
-frameJoints = 0
-
-frame = 0
-
-jointList = []
-frameList = []
 
 if __name__ == '__main__':
 
@@ -64,7 +56,8 @@ if __name__ == '__main__':
     ret_val, image = cam.read()
     logger.info('cam image=%dx%d' % (image.shape[1], image.shape[0]))
 
-    pre = preprocess.Preprocessing();
+    pre = preprocess.Preprocessing()
+    jc = counterJoints.JointsCounter()
     # Keep reading the camera input until you exit the program -- You can click ESC to quit the program while it is running
 
     preNum = 49
@@ -75,7 +68,7 @@ if __name__ == '__main__':
     frame = -1
     while True:
         ret_val, image = cam.read()
-        frame = frame + 1
+        jc.frame = jc.frame + 1
         #preprocessed = pre.Edge_detection(image)
 
         keyPress = cv2.waitKey(1)
@@ -109,24 +102,7 @@ if __name__ == '__main__':
 
         # Update the players' joint positions
 
-        for counter, human in enumerate(humans):  # For the 2 players
-
-            if counter > 1:  # Don't bother detecting more than 2 players.
-                break;
-
-            bodyPartCounter += len(human.body_parts)
-            # print("Total Parts found: " + bodyPartCounter)
-            totalJoints = totalJoints + len(human.body_parts)
-
-            frameJoints = frameJoints + len(human.body_parts)
-
-            bodyPartSectionsCounter
-
-        jointList.append(frameJoints)
-
-        frameJoints = 0
-
-        frameList.append(frame)
+        jc.CountJoints(humans)
 
         # Generate joint image with all the currently known joint locations
 
@@ -143,11 +119,5 @@ if __name__ == '__main__':
         logger.debug('finished+')
 
     cv2.destroyAllWindows()
-    print("The total amount of joints found: " + str(totalJoints))
-    print("Frame count: " + str(frame))
-    plt.plot(frameList, jointList)
-    plt.xlabel('Frame')
-    plt.ylabel('Body parts found')
-    plt.title('Body parts found per frame')
-    plt.grid(True)
-    plt.show()
+    jc.ShowJointPlot()
+    
