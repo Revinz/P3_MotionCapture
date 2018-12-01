@@ -1,24 +1,35 @@
-import argparse
-import logging
-import time
-import importlib.util
 
-import cv2
-import numpy as np
+class JointsCounter:
 
-import tf_pose.estimator as estimator
-from tf_pose.estimator import TfPoseEstimator
-from tf_pose.networks import get_graph_path, model_wh
+    #for plotting
+    bodyPartCounter = 0  # Total amount of joints found
+    bodyPartSectionsCounter = []  # Amounts of joints per x frames
 
-# Import our stuff
-import human_tetris as ht
-import preprocess
-              
-counter = 0
-              
-for player in self.players:
-  counter+=len(player.body_parts)
-    
-                
-             
-print(counter)
+    totalJoints = 0
+
+    frameJoints = 0
+
+    frame = 0
+
+    jointList = []
+    frameList = []
+
+    frame = 0
+
+    def CountJoints(self, humans):
+        for counter, human in enumerate(humans): #For the 2 players
+
+            bodyPartCounter+=len(human.body_parts)
+            #print("Total Parts found: " + bodyPartCounter)
+            totalJoints = totalJoints + len(human.body_parts)
+            
+            frameJoints = frameJoints + len(human.body_parts)
+
+            bodyPartSectionsCounter
+            
+        jointList.append(frameJoints)
+        
+        frameJoints = 0
+
+        frameList.append(frame)
+

@@ -12,6 +12,7 @@ from tf_pose.estimator import TfPoseEstimator
 from tf_pose.networks import get_graph_path, model_wh
 
 import preprocess
+import counterJoints
 
 logger = logging.getLogger('TfPoseEstimator-Video')
 logger.setLevel(logging.DEBUG)
@@ -22,20 +23,6 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 fps_time = 0
-
-#for plotting
-bodyPartCounter = 0  # Total amount of joints found
-bodyPartSectionsCounter = []  # Amounts of joints per x frames
-
-totalJoints = 0
-
-frameJoints = 0
-
-frame = 0
-
-jointList = []
-frameList = []
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='tf-pose-estimation Video')
@@ -53,12 +40,13 @@ if __name__ == '__main__':
     cap = cv2.VideoCapture(args.video)
 
     pre = preprocess.Preprocessing();
+    jc = counterJoints.JointsCounter();
 
     if cap.isOpened() is False:
         print("Error opening video stream or file")
     while cap.isOpened():
         ret_val, image = cap.read()
-        frame += 1
+        jc.frame += 1
 
         #preprocessed = pre.Contrast(1.5,image) ##Change the pre.XXXX to the preprocessing technique you want. Remember to pass all the required parameters
         #0.5 for low contrast og 1.5 for high contrast
@@ -84,31 +72,13 @@ if __name__ == '__main__':
         cv2.imshow('tf-pose-estimation result', image)
         fps_time = time.time()
 
-        
-        for counter, human in enumerate(humans): #For the 2 players
-
-            if counter > 1: #Don't bother detecting more than 2 players.
-                break;
-
-            bodyPartCounter+=len(human.body_parts)
-            #print("Total Parts found: " + bodyPartCounter)
-            totalJoints = totalJoints + len(human.body_parts)
-            
-            frameJoints = frameJoints + len(human.body_parts)
-
-            bodyPartSectionsCounter
-            
-        jointList.append(frameJoints)
-        
-        frameJoints = 0
-
-        frameList.append(frame)
+        jc.CountJoints(humans)
 
         if cv2.waitKey(1) == 27:
             break
 
         #Stop video after 300 frames -- otherwise it might result in an error
-        if (frame >= 300):
+        if (jc.frame >= 300):
             break
 
     cv2.destroyAllWindows()
