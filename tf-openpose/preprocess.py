@@ -19,7 +19,7 @@ class Preprocessing:
         cv.cvtColor(image,cv.COLOR_BGR2GRAY)
 
         #Apply Canny edge detection filter, second & third argument represents min & Max intensity values.
-        edges = cv.Canny(image, 100, 150, True)
+        edges = cv.Canny(image, 75, 150, True)
 
         #For every value from 0 to image width(x) and image height(y), check if the pixel in edges is white, if yes, set the corresponding pixel in image to white
         mask = cv.inRange(edges, 1, 255)

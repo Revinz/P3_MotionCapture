@@ -38,6 +38,9 @@ if __name__ == '__main__':
     w, h = model_wh(args.resolution)
     e = TfPoseEstimator(get_graph_path(args.model), target_size=(w, h))
     cap = cv2.VideoCapture(args.video)
+    # preprocessed = pre.Contrast(1.5,image)
+    # FIRST ITERATION:0.5 for low contrast og 1.5 for high contrast
+    # SECOND ITERATION: 0.75 for low & 1.25 for high
 
     pre = preprocess.Preprocessing();
     jc = counterJoints.JointsCounter();
@@ -48,15 +51,20 @@ if __name__ == '__main__':
         ret_val, image = cap.read()
         jc.frame += 1
 
-        #preprocessed = pre.Contrast(1.5,image) ##Change the pre.XXXX to the preprocessing technique you want. Remember to pass all the required parameters
-        #0.5 for low contrast og 1.5 for high contrast
+        #preprocessed = pre.Contrast(0.75,image) ##Change the pre.XXXX to the preprocessing technique you want. Remember to pass all the required parameters
+        #preprocessed = pre.Contrast(1.25,image) #HIGH CONTRAST
 
         #preprocessed = pre.Edge_detection(image)
+        #FIRST ITERATION: 100, 150
+        #SECOND ITERATION: 75, 150
 
         #preprocessed = pre.Histogram_EQ(image)
+        #FIRST ITERATION:
 
-        preprocessed = pre.Sharpness(5,4,image)
+        preprocessed = pre.Sharpness(6.5,4,image)
         # Default values: 5, 4
+        #FIRST ITERATION: 9, 9
+        #SECOND ITERATION: 6.5,4
 
         image = preprocessed #Outcomment this to only have openpose (groundtruth)
 
@@ -66,7 +74,7 @@ if __name__ == '__main__':
             image = np.zeros(image.shape)
         image = TfPoseEstimator.draw_humans(image, humans, imgcopy=False)
 
-        cv2.putText(image, "Frame: " + str(frame), (10,30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        cv2.putText(image, "Frame: " + str(jc.frame), (10,30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
         cv2.putText(image, "FPS: %f" % (1.0 / (time.time() - fps_time)), (10, 10),  cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         cv2.imshow('tf-pose-estimation result', image)
