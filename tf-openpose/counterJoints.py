@@ -18,6 +18,8 @@ class JointsCounter:
 
     frame = 0
 
+    showPlot = False
+
     def CountJoints(self, humans):
         for counter, human in enumerate(humans): #For the 2 players
 
@@ -36,6 +38,9 @@ class JointsCounter:
         self.frameList.append(self.frame)
 
     def ShowJointPlot(self):
+        if not self.totalJoints > 0:
+            return
+
         print("The total amount of joints found: " + str(self.totalJoints))
         print("Frame count: " + str(self.frame))
         plt.plot(self.frameList, self.jointList)
