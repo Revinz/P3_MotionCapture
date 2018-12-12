@@ -23,6 +23,7 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 fps_time = 0
+fps_found = False
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='tf-pose-estimation Video')
@@ -48,7 +49,8 @@ if __name__ == '__main__':
     if cap.isOpened() is False:
         print("Error opening video stream or file")
     while cap.isOpened():
-        ret_val, image = cap.read()
+        ret_val, image = cap.read()      
+
         jc.frame += 1
 
         #preprocessed = pre.Contrast(0.75,image) ##Change the pre.XXXX to the preprocessing technique you want. Remember to pass all the required parameters
@@ -78,7 +80,20 @@ if __name__ == '__main__':
 
         cv2.putText(image, "FPS: %f" % (1.0 / (time.time() - fps_time)), (10, 10),  cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         cv2.imshow('tf-pose-estimation result', image)
+        fps = 1/(time.time() - fps_time)
         fps_time = time.time()
+
+        if fps_found == False and fps > 1:
+            print(fps)
+            fps_found = True
+            highest_fps = fps           
+            lowest_fps = fps
+        
+        if fps_found:
+            if fps > highest_fps:
+                highest_fps = fps
+            elif fps < lowest_fps:
+                lowest_fps
 
         jc.CountJoints(humans)
 
@@ -88,7 +103,10 @@ if __name__ == '__main__':
         #Stop video after 300 frames -- otherwise it might result in an error
         if (jc.frame >= 300):
             break
-
+            
     cv2.destroyAllWindows()
+    print("Lowest FPS: %f" % lowest_fps)
+    print("Highest FPS: %f" % highest_fps)
+    print("Variance: %f" % (highest_fps - lowest_fps))
     jc.ShowJointPlot()
 logger.debug('finished+')
