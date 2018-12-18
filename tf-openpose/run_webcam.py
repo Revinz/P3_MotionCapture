@@ -69,10 +69,9 @@ if __name__ == '__main__':
     while True:
         ret_val, image = cam.read()
         jc.frame = jc.frame + 1
-        #preprocessed = pre.Edge_detection(image)
 
         keyPress = cv2.waitKey(1)
-        # Demo day -- filter selection
+        # Filter selection
         if keyPress != -1:
             preNum = keyPress
 
@@ -96,15 +95,13 @@ if __name__ == '__main__':
         humans = e.inference(preprocessed, resize_to_default=(w > 0 and h > 0),
                              upsample_size=args.resize_out_ratio)  # Array of the humans with joints.
 
-        # Draw joints -- will be hidden later.
+        # Draw joints on the image
         # logger.debug('postprocess+')
         preprocessed = TfPoseEstimator.draw_humans(preprocessed, humans, imgcopy=False)
 
         # Update the players' joint positions
 
         jc.CountJoints(humans)
-
-        # Generate joint image with all the currently known joint locations
 
         # Show the image
         # logger.debug('show+')

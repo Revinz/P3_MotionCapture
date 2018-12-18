@@ -5,12 +5,14 @@ import numpy as np
 
 class Preprocessing:
 
-    ### Change what you need to change. These are just setups to get you all started
-
-    def Contrast(self, value, image): # Easily used for both high and low contrast
-        #Just a test, remove when implementing proper method 0.5 for low contrast og 1.5 for high contrast
+    def Contrast(self, value, image): # Used for both high and low contrast
+        #Convert to HSV to get the Value channel
         hsv = cv.cvtColor(image, cv.COLOR_RGB2HSV)
+
+        #Multiply the value channel by the value
         hsv[...,2] = cv.multiply(hsv[...,2], value)
+
+        #Convert the image back into RGB
         new_image = cv.cvtColor(hsv, cv.COLOR_HSV2RGB)
         return new_image
 
@@ -34,30 +36,13 @@ class Preprocessing:
         image = np.where(mask != black, mask, image)
         #cv.imshow('edges', edges)
         return image
-    
-    def BG_Subtraction(self, BG, image):
-        h, w, bbp = np.shape(BG)
-
-        BG_hsv = cv.cvtColor(BG, cv.COLOR_RGB2HSV)
-        imageHsv = cv.cvtColor(image, cv.COLOR_RGB2HSV)
-        
-
-        diff = cv.absdiff(imageHsv[..., 2], BG_hsv[..., 2])
-        Threshhold = 45
-        diff = np.where(diff > Threshhold, imageHsv[..., 2], 0)
-        imageHsv[..., 2] = diff
-        image = cv.cvtColor(imageHsv, cv.COLOR_HSV2RGB)
-
-        #image = np.where(image != BG, image, image * 0)
-
-        return image
 
     def Sharpness(self, original_image_weight, blurred_image_weight, image):
-        #Just a test, remove when implementing proper method
-        blurred_image = cv.GaussianBlur(image, (9,9), 0) #Blur the image 
+        #Blur the image 
+        blurred_image = cv.GaussianBlur(image, (9,9), 0)
+        
+        #Subtract the blurred image from the original image to sharpen it
         sharpened = cv.addWeighted(image, original_image_weight, blurred_image, -blurred_image_weight, 0, blurred_image)  #Subtract the blurred image from the original image to sharpen it
-        # -- More about this approach here: https://en.wikipedia.org/wiki/Unsharp_masking#Digital_unsharp_masking (Called Unsharp_masking)
-        #Default values: 1.5, 1
 
         return sharpened
 

@@ -39,9 +39,6 @@ if __name__ == '__main__':
     w, h = model_wh(args.resolution)
     e = TfPoseEstimator(get_graph_path(args.model), target_size=(w, h))
     cap = cv2.VideoCapture(args.video)
-    # preprocessed = pre.Contrast(1.5,image)
-    # FIRST ITERATION:0.5 for low contrast og 1.5 for high contrast
-    # SECOND ITERATION: 0.75 for low & 1.25 for high
 
     pre = preprocess.Preprocessing();
     jc = counterJoints.JointsCounter();
@@ -53,7 +50,7 @@ if __name__ == '__main__':
 
         jc.frame += 1
 
-        #preprocessed = pre.Contrast(0.75,image) ##Change the pre.XXXX to the preprocessing technique you want. Remember to pass all the required parameters
+        #preprocessed = pre.Contrast(0.75,image) ##Change the pre.XXXX to the preprocessing technique you want. 
         #preprocessed = pre.Contrast(1.25,image) #HIGH CONTRAST
 
         #preprocessed = pre.Edge_detection(image)
@@ -83,6 +80,7 @@ if __name__ == '__main__':
         fps = 1/(time.time() - fps_time)
         fps_time = time.time()
 
+        #Update FPS measurements
         if fps_found == False and fps > 1:
             print(fps)
             fps_found = True
@@ -95,6 +93,7 @@ if __name__ == '__main__':
             elif fps < lowest_fps:
                 lowest_fps
 
+        #Count joints for the frame
         jc.CountJoints(humans)
 
         if cv2.waitKey(1) == 27:
