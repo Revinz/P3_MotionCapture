@@ -144,14 +144,6 @@ $ python run_webcam.py --model=mobilenet_thin --resize=432x368 --camera=0
 
 Then you will see the realtime webcam screen with estimated poses as below. This [Realtime Result](./etcs/openpose_macbook13_mobilenet2.gif) was recored on macbook pro 13" with 3.1Ghz Dual-Core CPU.
 
-## Run Videos
-
-To run each video, use the below code. Change 'videos' to the folder of the video you want to run, eg First Test Iteration/
-after the / add the video name, as seen in the example below.
-```
-python run_video.py --model=mobilenet_thin --video=videos/blurr.mp4
-```
-
 ## Python Usage
 
 This pose estimator provides simple python classes that you can use in your applications.
