@@ -60,7 +60,7 @@ if __name__ == '__main__':
         #preprocessed = pre.Histogram_EQ(image)
         #FIRST ITERATION:
 
-        preprocessed = pre.Sharpness(6.5,4,image)
+        preprocessed = pre.Contrast(0.5, image)
         # Default values: 5, 4
         #FIRST ITERATION: 9, 9
         #SECOND ITERATION: 6.5,4
@@ -96,6 +96,11 @@ if __name__ == '__main__':
         #Count joints for the frame
         jc.CountJoints(humans)
 
+        currFrameJoints = 0
+        for counter, human in enumerate(humans): #For the 2 players
+            
+            currFrameJoints += + len(human.body_parts)
+
         while (True):
             
             key = cv2.waitKey(1)
@@ -109,6 +114,9 @@ if __name__ == '__main__':
 
         if cv2.waitKey(1) == 27:
             break
+
+
+        print("Frame/image: " + str(jc.frame) + " Joints: "+ str(currFrameJoints))
 
         #Stop video after 300 frames -- otherwise it might result in an error
         if (jc.frame >= 300):
