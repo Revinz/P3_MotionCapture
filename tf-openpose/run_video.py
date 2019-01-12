@@ -96,6 +96,17 @@ if __name__ == '__main__':
         #Count joints for the frame
         jc.CountJoints(humans)
 
+        while (True):
+            
+            key = cv2.waitKey(1)
+
+            if key == 100:
+                break
+            elif key == 97 and jc.frame > 1:
+                cap.set(1, jc.frame - 2)    
+                jc.frame -= 2
+                break
+
         if cv2.waitKey(1) == 27:
             break
 
