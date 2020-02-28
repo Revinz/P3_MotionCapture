@@ -1,2 +1,5 @@
 # P3_MotionCapture
-3rd semester project. Making a motion capture obstacle game
+3rd semester project. Improving OpenPose
+
+Read published paper at:
+https://www.researchgate.net/publication/332780385_Improving_the_Accuracy_of_Intelligent_Pose_Estimation_Systems_Through_Low_Level_Image_Processing_Operations
